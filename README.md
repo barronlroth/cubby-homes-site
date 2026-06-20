@@ -26,3 +26,5 @@ npm run preview -- --host 127.0.0.1 --port 4321
 ## Deploy
 
 The Vercel project is `cubby-homes` under `barronlroths-projects`.
+
+Pushes to `main` are connected to the existing Vercel project and deploy to production for `cubby.homes` / `www.cubby.homes`.

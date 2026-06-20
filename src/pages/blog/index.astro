@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('blog')).filter((post) => !post.data.draft).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<BaseLayout title="Cubby Blog — Home Inventory, Moving, and Storage Guides" description="Practical guides for home inventories, moving boxes, storage bins, emergency kits, and remembering where everything lives.">
+  <section class="blog-hero">
+    <div class="blog-hero-inner">
+      <p class="section-kicker">Cubby Blog</p>
+      <h1>Practical guides for household chaos.</h1>
+      <p class="tagline">Home inventories, moving boxes, storage bins, emergency kits, and the tiny systems that keep your stuff from vanishing into domestic folklore.</p>
+    </div>
+  </section>
+  <main class="blog-grid">
+    {posts.map((post) => (
+      <a class="post-card" href={`/blog/${post.id}`}>
+        {post.data.image ? <img class="post-card-image" src={post.data.image} alt={post.data.hero ?? ''} loading="lazy" /> : null}
+        <div class="post-card-body">
+          <p class="eyebrow">{post.data.tags?.[0] ?? 'Guide'}</p>
+          <h2>{post.data.title}</h2>
+          <p>{post.data.description}</p>
+          <span class="read-more">Read guide →</span>
+        </div>
+      </a>
+    ))}
+  </main>
+  <section class="blog-footer-cta" aria-label="Download Cubby">
+    <div class="blog-footer-cta-inner">
+      <div>
+        <h2>Turn the guide into a system.</h2>
+        <p>Cubby helps you save photos, tags, and exact storage paths for every item, box, room, and home — so the useful advice above survives contact with real life.</p>
+      </div>
+      <a class="nav-cta" href="https://apps.apple.com/app/id6751732388" target="_blank" rel="noopener">Download Cubby</a>
+    </div>
+  </section>
+</BaseLayout>

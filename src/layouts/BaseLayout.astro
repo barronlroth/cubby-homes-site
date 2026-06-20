@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+}
+
+const {
+  title,
+  description = 'Cubby helps you keep track of everything you own — across homes, rooms, closets, boxes, and storage spaces.',
+  image = '/app-icon.png',
+  canonical = Astro.url.href
+} = Astro.props;
+const absoluteImage = new URL(image, Astro.site ?? Astro.url).href;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" href="/app-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={absoluteImage} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteImage} />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="nav-brand" href="/" aria-label="Cubby home"><img src="/app-icon.png" alt="" /><span>Cubby</span></a>
+        <div class="nav-links"><a href="/blog">Blog</a><a class="nav-cta" href="https://apps.apple.com/app/id6751732388" target="_blank" rel="noopener">Download</a></div>
+      </nav>
+    </header>
+    <slot />
+    <footer class="site-footer">
+      <p>Made with care by <a href="https://barronroth.com">Barron Roth</a></p>
+      <div class="footer-links"><a href="/blog">Blog</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/rss.xml">RSS</a></div>
+    </footer>
+    <script>
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => entry.target.classList.add('visible'), i * 80);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+  </body>
+</html>

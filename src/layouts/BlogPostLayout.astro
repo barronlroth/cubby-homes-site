@@ -1,0 +1,23 @@
+---
+import BaseLayout from './BaseLayout.astro';
+const { post } = Astro.props;
+const canonical = new URL(`/blog/${post.id}`, Astro.site ?? Astro.url).href;
+const date = post.data.pubDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+---
+<BaseLayout title={`${post.data.title} — Cubby`} description={post.data.description} canonical={canonical}>
+  <article class="article-shell">
+    <header class="article-header">
+      <p class="post-meta">{date} · Cubby guide</p>
+      <h1>{post.data.title}</h1>
+      <p class="article-description">{post.data.description}</p>
+      {post.data.tags?.length ? <div class="article-tags" aria-label="Tags">{post.data.tags.map((tag) => <span>{tag}</span>)}</div> : null}
+      {post.data.image ? <img class="article-hero-image" src={post.data.image} alt={post.data.hero ?? ''} loading="eager" /> : null}
+    </header>
+    <div class="prose"><slot /></div>
+    <aside class="article-cta">
+      <h2>Give every thing a home.</h2>
+      <p>Cubby helps you save items, photos, tags, and exact storage paths — so “I know I own it” finally becomes “I know where it is.”</p>
+      <a class="app-store-badge" href="https://apps.apple.com/app/id6751732388" target="_blank" rel="noopener"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Download on the App Store" /></a>
+    </aside>
+  </article>
+</BaseLayout>
